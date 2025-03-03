@@ -26,6 +26,9 @@ Le projet consiste en la simulation d'une banque où les clients peuvent interag
   - `afficherTousClients()` : Affiche la liste de tous les clients.
   - `afficherToutesTransactions()` : Affiche l’historique de toutes les transactions.
 
+### Relations :
+- **Composition** : La banque possède une relation de composition avec **Client**, **Compte** et **Transaction**, car elle gère leur cycle de vie.
+
 ---
 
 ### 2. **Personne**
@@ -40,6 +43,9 @@ Le projet consiste en la simulation d'une banque où les clients peuvent interag
   - `envoyerArgent(Client destinataire, double montant)` : Envoie de l’argent à un client.
   - `devenirClient(Banque banque)` : Devient un client en ouvrant un compte.
   - `afficherInfos()` : Affiche les informations de la personne.
+
+### Relations :
+- **Association** avec **Client** : Une personne peut devenir client (sans forcément avoir de compte au départ) ou interagir avec un client en envoyant de l’argent.
 
 ---
 
@@ -56,6 +62,10 @@ Le projet consiste en la simulation d'une banque où les clients peuvent interag
   - `retirerArgent(Compte compte, double montant)` : Retirer de l’argent d’un compte.
   - `afficherHistoriqueTransactions()` : Afficher l'historique des transactions.
 
+### Relations :
+- **Association** avec **Compte** : Un client peut avoir plusieurs comptes.
+- **Association** avec **Transaction** : Un client peut initier ou recevoir plusieurs transactions.
+
 ---
 
 ### 4. **Compte**
@@ -68,6 +78,10 @@ Le projet consiste en la simulation d'une banque où les clients peuvent interag
   - `retirer(double montant)` : Retire un montant si le solde est suffisant.
   - `afficherSolde()` : Affiche le solde du compte.
 
+### Relations :
+- **Association** avec **Client** : Un compte appartient à un client.
+- **Association** avec **Transaction** : Un compte peut être impliqué dans plusieurs transactions (en tant que source ou destination).
+
 ---
 
 ### 5. **Transaction**
@@ -75,8 +89,22 @@ Le projet consiste en la simulation d'une banque où les clients peuvent interag
 - **Attributs** :
   - `montant` : Montant de la transaction.
   - `dateTransaction` : Date de la transaction.
+  - `source` : Compte source d'où provient l'argent.
+  - `destination` : Compte destinataire de la transaction.
+  - `etat` : État de la transaction (en attente, réussie, échouée).
 - **Méthodes** :
   - `executer()` : Exécute la transaction en mettant à jour les soldes des comptes.
+  - `annuler()` : Annule une transaction, si nécessaire, et effectue les remboursements.
+  - `verifierFondsSuffisants()` : Vérifie si le compte source a suffisamment de fonds pour la transaction.
+  - `afficherDetails()` : Affiche les détails complets de la transaction.
+  - `confirmer()` : Confirme l’exécution réussie de la transaction.
+  - `enregistrerHistorique()` : Enregistre la transaction dans l’historique des comptes concernés.
+  - `calculerFrais()` : Calcule les frais associés à la transaction, s'il y en a.
+
+### Relations :
+- **Association** avec **Compte** : Une transaction implique toujours deux comptes (source et destination).
+- **Association** avec **Client** : Un client est toujours l'initiateur ou le destinataire d'une transaction.
+- **Dépendance** : La transaction dépend des états des comptes impliqués pour pouvoir s'exécuter correctement.
 
 ---
 
@@ -85,6 +113,7 @@ Le projet consiste en la simulation d'une banque où les clients peuvent interag
 - **Banque → Client, Compte, Transaction (Composition)** : La banque gère les clients, comptes, et transactions.
 - **Client → Compte (Association)** : Un client peut posséder plusieurs comptes.
 - **Compte → Transaction (Association)** : Un compte est impliqué dans plusieurs transactions.
+- **Transaction → Client, Compte (Association)** : Une transaction implique toujours des comptes et des clients.
 - **Personne → Client (Possibilité d’évolution)** : Une personne peut devenir client en ouvrant un compte.
 
 ---
@@ -100,5 +129,3 @@ Le projet consiste en la simulation d'une banque où les clients peuvent interag
 ---
 
 Fin de la première version du projet.
-
----
